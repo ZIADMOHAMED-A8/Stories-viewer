@@ -10,9 +10,16 @@ const apiSlice=createApi({
             query:()=>({
                 url:'/stories',
                 method:'GET'
+            }),
+            
+        }),
+        getUsers:builder.query({
+            query:()=>({
+                url:'/users',
+                methpd:'GET'
             })
         })
     })
 })
-export const { useGetStoriesQuery } = apiSlice;
+export const { useGetStoriesQuery,useGetUsersQuery } = apiSlice;
 export default apiSlice;

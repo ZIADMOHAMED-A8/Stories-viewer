@@ -3,6 +3,7 @@ import apiSlice from '../storiesSlice'
 import viewedSlice  from '../currentViewedSlice'
 
 export const store=configureStore({
+
     reducer:{
         [apiSlice.reducerPath]:apiSlice.reducer,
         current:viewedSlice
