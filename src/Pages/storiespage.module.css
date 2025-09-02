@@ -18,7 +18,7 @@
     
     margin: 0 250px;
 
-    
+    position: relative;
     display: flex;
     gap:30px;
     align-items: center;    
@@ -29,7 +29,7 @@
 }
 .container >div:not(.active){
     width: 200px;
-    height: 40%;
+    height: 50%;
     position: relative;
     border-radius: 12px;
     transition: 0.2s;
@@ -50,6 +50,7 @@
     height: calc(100vh - 36px);
     border-radius: 12px;
     transition: 0.2s;
+    position: relative;
     flex-shrink: 0;
 
 }
@@ -74,4 +75,7 @@
   } */
 
 
-  
+  .story_progress{
+    position: absolute;
+    width: 100%;
+  }

@@ -1,6 +1,10 @@
-.story_circle{
-    background-color: black;
+.story_circle {
+    background-color: #000;
     width: 50px;
-    border-radius: 70%;
     height: 50px;
-}
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
