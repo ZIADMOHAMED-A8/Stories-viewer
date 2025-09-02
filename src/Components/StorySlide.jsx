@@ -18,7 +18,8 @@ export default function StorySlide ({item,index,parentRef}){
         console.log(parentRef.current.children[index])
 
         parentRef.current.children[index].scrollIntoView({ behavior: "smooth", inline: "center" })
-        parentRef.current.children[index].click()
+        parentRef.current.children[index].scrollIntoView({ behavior: "smooth", inline: "center" })
+        
     }
     function tooglePause(){
         setisPaused((isPaused)=>!isPaused)
@@ -26,8 +27,9 @@ export default function StorySlide ({item,index,parentRef}){
     return(
         <div className={index ==currentActive ? styles.active : ''}>
 {index ==currentActive &&
-    <StoryProgress ref={timerRef} parentRef={parentRef} style={{
+    <StoryProgress setisPaused={setisPaused} ref={timerRef} parentRef={parentRef} style={{
         position:'absolute',
+        
         width:'95%',
         left:'10px'
         ,top:'10px'

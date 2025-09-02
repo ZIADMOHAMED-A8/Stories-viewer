@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setIndex } from "../../currentViewedSlice";
 
-  const StoryProgress = forwardRef(({ duration = 3000, parentRef, ...props }, ref) => {
+  const StoryProgress = forwardRef(({ duration = 3000, parentRef,setisPaused, ...props }, ref) => {
     const [value, setValue] = useState(0);
     const timerRef = useRef(null);
     const startTimeRef = useRef(null);
@@ -59,7 +59,7 @@ import { setIndex } from "../../currentViewedSlice";
     useEffect(() => {
       elapsedRef.current = 0;
       startTimer();
-      return () => clearInterval(timerRef.current);
+      return () => {setisPaused(false); return clearInterval(timerRef.current)};
     }, [duration, index]);
   
     return (
