@@ -19,10 +19,8 @@ import { setIndex, setInIndex } from "../../currentViewedSlice";
     let nav = useNavigate();
     useImperativeHandle(ref, () => ({
       pause: () => {
-        if (timerRef.current && startTimeRef.current) {
-          clearInterval(timerRef.current);
-          elapsedRef.current += Date.now() - startTimeRef.current;
-        }
+        clearInterval(timerRef.current);
+        elapsedRef.current += Date.now() - startTimeRef.current;
       },
       resume: () => {
         startTimer();
@@ -48,7 +46,7 @@ import { setIndex, setInIndex } from "../../currentViewedSlice";
           elapsedRef.current = 0; 
   
           if (index === data.length - 1) {
-            nav('');
+            nav('/');
           } else {
             if(data[index].stories.length-1===InIndex){
             dispatch(setIndex({ index: index + 1 }));
@@ -71,11 +69,9 @@ import { setIndex, setInIndex } from "../../currentViewedSlice";
       elapsedRef.current = 0;
       if(active){
         startTimer()
-      } else {
-        clearInterval(timerRef.current);
-      }
+      };
       return () => {setisPaused(false); return clearInterval(timerRef.current)};
-    }, [duration, index, active]);
+    }, [duration, index,active]);
   
     return (
       <progress value={value} max="100" {...props} className={styles["story-progress"]}></progress>
