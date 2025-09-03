@@ -1,80 +1,99 @@
 import { useEffect, useState, useRef, useImperativeHandle, forwardRef } from "react";
-import styles from '../Components/StoryProgress.module.css'
-import { useGetStoriesQuery, useGetUsersQuery } from "../../storiesSlice";
+import styles from "../Components/StoryProgress.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setIndex, setInIndex } from "../../currentViewedSlice";
+import { useGetUsersQuery } from "../../storiesSlice";
+import { useTimer } from "react-timer-hook";
 
-  const StoryProgress = forwardRef(({ active,duration = 3000, parentRef,setisPaused, ...props }, ref) => {
+const StoryProgress = forwardRef(
+  ({ active, duration = 3000, parentRef, ...props }, ref) => {
     const [value, setValue] = useState(0);
-    const timerRef = useRef(null);
     const startTimeRef = useRef(null);
-    const elapsedRef = useRef(0);
-  
+    
     let { data } = useGetUsersQuery();
     let dispatch = useDispatch();
     let index = useSelector((state) => state.current.index);
     let InIndex = useSelector((state) => state.current.InIndex);
-  
+    
     let nav = useNavigate();
-    useImperativeHandle(ref, () => ({
-      pause: () => {
-        clearInterval(timerRef.current);
-        elapsedRef.current += Date.now() - startTimeRef.current;
-      },
-      resume: () => {
-        startTimer();
-      },
-      reset: () => {
-        clearInterval(timerRef.current);
-        setValue(0);
-        elapsedRef.current = 0;
-        startTimer();
-      }
-    }));
-  
-    const startTimer = () => {
-      startTimeRef.current = Date.now();
-      clearInterval(timerRef.current);
-  
-      timerRef.current = setInterval(() => {
-        let progress = ((Date.now() - startTimeRef.current + elapsedRef.current) / duration) * 100;
-  
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(timerRef.current);
-          elapsedRef.current = 0; 
-  
-          if (index === data.length - 1) {
-            nav('/');
-          } else {
-            if(data[index].stories.length-1===InIndex){
-            dispatch(setIndex({ index: index + 1 }));
-            dispatch(setInIndex({InIndex:0}))
-            parentRef.current.children[index].scrollIntoView({ behavior: "smooth", inline: "center" });
-      
-          }
-          else{
-            dispatch(setInIndex({InIndex:InIndex+1}))
 
-          }
+    const getExpiryTimestamp = () => {
+      const time = new Date();
+      time.setMilliseconds(time.getMilliseconds() + duration);
+      return time;
+    };
+
+    const { pause, resume, restart, isRunning, start } = useTimer({
+      expiryTimestamp: getExpiryTimestamp(),
+      onExpire: () => {
+        if (index === data.length - 1) {
+          nav("/");
+        } else {
+          if (data[index].stories.length - 1 === InIndex) {
+            dispatch(setIndex({ index: index + 1 }));
+            dispatch(setInIndex({ InIndex: 0 }));
+            parentRef.current.children[index].scrollIntoView({
+              behavior: "smooth",
+              inline: "center",
+            });
+          } else {
+            dispatch(setInIndex({ InIndex: InIndex + 1 }));
           }
         }
-  
-        setValue(progress);
-      }, 50);
-    };
-  
+      },
+      autoStart: false,
+    });
+
+    useImperativeHandle(ref, () => ({
+      pause: () => pause(),
+      resume: () => resume(),
+      reset: () => {
+        restart(getExpiryTimestamp());
+        setValue(0);
+        startTimeRef.current = Date.now();
+      },
+    }));
+
     useEffect(() => {
-      elapsedRef.current = 0;
-      if(active){
-        startTimer()
-      };
-      return () => {setisPaused(false); return clearInterval(timerRef.current)};
-    }, [duration, index,active]);
-  
+      if (active && !isRunning) {
+        startTimeRef.current = Date.now();
+        start();
+      } else if (!active && isRunning) {
+        pause();
+      }
+    }, [active, isRunning, start, pause]);
+
+    useEffect(() => {
+      if (active && isRunning && startTimeRef.current) {
+        const interval = setInterval(() => {
+          const elapsed = Date.now() - startTimeRef.current;
+          const progress = (elapsed / duration) * 100;
+          setValue(Math.min(progress, 100));
+        }, 50);
+
+        return () => clearInterval(interval);
+      }
+    }, [active, isRunning, duration]);
+
+    useEffect(() => {
+      if (active) {
+        restart(getExpiryTimestamp());
+        setValue(0);
+        startTimeRef.current = Date.now();
+        start();
+      }
+    }, [index, InIndex]);
+
     return (
-      <progress value={value} max="100" {...props} className={styles["story-progress"]}></progress>
+      <progress
+        value={value}
+        max="100"
+        {...props}
+        className={styles["story-progress"]}
+      />
     );
-  });
-  export default StoryProgress
+  }
+);
+
+export default StoryProgress;

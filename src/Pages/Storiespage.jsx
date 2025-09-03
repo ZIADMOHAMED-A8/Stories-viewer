@@ -7,7 +7,7 @@ import { useGetStoriesQuery, useGetUsersQuery } from '../../storiesSlice'
 import StoryProgress from '../Components/StoryProgress'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIndex, setInIndex } from '../../currentViewedSlice'
-import { FaPause, FaPlay } from "react-icons/fa"; // Pause = مربعين || , Play = مثلث ▶
+import { FaPause, FaPlay } from "react-icons/fa";
 import StorySlide from '../Components/StorySlide'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -17,7 +17,6 @@ export default function Storiespage(){
     let parentRef=useRef(null)
     let nav=useNavigate()
     let id=useParams('id')
-    let index=useSelector((state)=>state.current.index)
     useLayoutEffect(()=>{
         dispatch(setIndex({index:+id.id}))
 

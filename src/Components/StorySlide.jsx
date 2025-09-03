@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import styles from '../Pages/storiespage.module.css'
 import Storycircle from "./Storycircle"
 import StoryProgress from "./StoryProgress"
-import { setIndex } from "../../currentViewedSlice"
-import { FaPause, FaPlay } from "react-icons/fa"; // Pause x    = مربعين || , Play = مثلث ▶
+import { resetInIndex, setIndex, setInIndex } from "../../currentViewedSlice"
+import { FaPause, FaPlay } from "react-icons/fa";
 export default function StorySlide ({item,index,parentRef}){
     let dispatch=useDispatch()
     let timersRef=useRef([])
@@ -12,34 +12,45 @@ export default function StorySlide ({item,index,parentRef}){
     let currentActive=useSelector((state)=> state.current.index)
     let InIndex=useSelector((state)=>state.current.InIndex)
     const safeInIndex = InIndex ?? 0
+    
     useEffect(() => {
-        if (parentRef?.current && parentRef.current.children[currentActive]) {
-          const container = parentRef.current;
-          const child = container.children[currentActive];
-          console.log(InIndex)
-          const containerWidth = container.offsetWidth;
-          const childWidth = child.offsetWidth;
-          const childLeft = child.offsetLeft;
-      
-          // احسب الموضع عشان يبقى في النص
-          const scrollPosition = childLeft - (containerWidth / 2) + (childWidth / 2);
-      
-          container.scrollTo({
-            left: scrollPosition,
-            behavior: "smooth"
-          });
+      if (parentRef?.current && parentRef.current.children[currentActive]) {
+        parentRef?.current.scrollTo({
+          inline:'center',
+          behavior: "smooth"
+        });
+      }
+      dispatch(setInIndex({ InIndex: 0 }));
+      if (timersRef.current[0]) {
+        timersRef.current[0].reset();
+      }
+    }, [currentActive]);
+    
+    useEffect(() => {
+      timersRef.current.forEach((timer, i) => {
+        if (timer && timer.pause) {
+          if (i !== safeInIndex) {
+            timer.pause();
+          }
         }
-      }, [currentActive]);
+      });
       
+      if (timersRef.current[safeInIndex]) {
+        timersRef.current[safeInIndex].resume();
+      }
+    }, [InIndex, safeInIndex]);
+        
     function handleclick(index){
         dispatch(setIndex({index:index}))
+        dispatch(setInIndex({InIndex:0}))
+
         console.log(parentRef.current.children[index])
- 
-        
     }
+    
     function tooglePause(){
         setisPaused((isPaused)=>!isPaused)
     }
+    
     return(
         <div className={index ==currentActive ? styles.active : ''}>
 {index ==currentActive &&
@@ -114,8 +125,6 @@ export default function StorySlide ({item,index,parentRef}){
 <img src={item.stories[safeInIndex]?.mediaUrl} alt="coudln't load" onClick={()=>{handleclick(index)}}   />
 
 }
-
-
 
 
 

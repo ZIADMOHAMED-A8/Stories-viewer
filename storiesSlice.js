@@ -16,7 +16,7 @@ const apiSlice=createApi({
         getUsers:builder.query({
             query:()=>({
                 url:'/users',
-                methpd:'GET'
+                method:'GET'
             })
         })
     })
