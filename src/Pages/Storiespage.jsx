@@ -17,8 +17,8 @@ export default function Storiespage(){
     let parentRef=useRef(null)
     let nav=useNavigate()
     let id=useParams('id')
-    useLayoutEffect(()=>{
-        dispatch(setIndex({index:id.id}))
+    useEffect(()=>{
+        dispatch(setIndex({index:+id.id}))
         console.log(id.id)
     })
     useEffect(()=>{
