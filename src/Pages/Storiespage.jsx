@@ -17,18 +17,20 @@ export default function Storiespage(){
     let parentRef=useRef(null)
     let nav=useNavigate()
     let id=useParams('id')
-    useEffect(()=>{
+    let index=useSelector((state)=>state.current.index)
+    useLayoutEffect(()=>{
         dispatch(setIndex({index:+id.id}))
-        console.log(id.id)
-    })
+
+    },[id.id])
     useEffect(()=>{
-        console.log(data)
+        
         return ()=>{
-            dispatch(setIndex({index:0}))
-            dispatch(setInIndex({InIndex:0}))
+            dispatch(setIndex({index:null}))
+            dispatch(setInIndex({InIndex:null}))
+            console.log('dsds')
 
         }
-    },[isLoading])
+    },[id.id])
 
     return(
         <div className={styles.overlay}>
@@ -46,7 +48,7 @@ export default function Storiespage(){
              
             {
             
-            data.map((item,index)=>
+            data?.map((item,index)=>
                 <StorySlide index={index} parentRef={parentRef}  item={item}></StorySlide>
                )}
             </div></>

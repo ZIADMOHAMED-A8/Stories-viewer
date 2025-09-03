@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useRef } from "react";
 
-let initialState={index:0,InIndex:0}
+let initialState={index:null,InIndex:0}
 
 export const viewedSlice=createSlice({
     name:'viewed',
@@ -12,8 +12,19 @@ export const viewedSlice=createSlice({
         },
         setInIndex(state,action){
             state.InIndex=action.payload.InIndex
+        },
+        resetIndex(state,action){
+            state.index=null
+        },
+        resetInIndex(state,action){
+            state.InIndex=null
+        },
+        resetBoth(state,action){
+            state.index=null
+            state.InIndex=null
+
         }
     }
 })
-export const {setIndex,setInIndex}=viewedSlice.actions;
+export const {setIndex,setInIndex,resetIndex,resetInIndex,resetBoth}=viewedSlice.actions;
 export default viewedSlice.reducer
