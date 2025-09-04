@@ -2,5 +2,18 @@
     display: flex;
     gap:20px;
     margin-top: 0px;
-    padding: 50px 200px;
+    padding: 40px 200px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.stories_section::-webkit-scrollbar{ display: none; }
+
+@media (max-width: 1024px){
+    .stories_section{ padding: 32px 120px; gap:16px; }
+}
+@media (max-width: 768px){
+    .stories_section{ padding: 24px 40px; gap:14px; }
+}
+@media (max-width: 480px){
+    .stories_section{ padding: 16px 16px; gap:12px; }
 }

@@ -1,10 +1,26 @@
 .story_circle {
-    background-color: #000;
     width: 80px;
-    border-radius: 50%;
     height: 80px;
+    border-radius: 50%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-  }
+    position: relative;
+}
+
+.story_circle::before{
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(#ff1e56, #ff7a00, #ffd200, #ff1e56);
+    z-index: -1;
+}
+
+@media (max-width: 768px){
+    .story_circle{ width: 68px; height: 68px; }
+}
+@media (max-width: 480px){
+    .story_circle{ width: 56px; height: 56px; }
+}
   

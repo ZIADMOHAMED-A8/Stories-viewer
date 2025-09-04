@@ -23,12 +23,12 @@ export default function Storiespage(){
     },[id.id])
     useEffect(()=>{
         
-        return ()=>{
-            dispatch(setIndex({index:null}))
-            dispatch(setInIndex({InIndex:null}))
-            console.log('dsds')
+        // return ()=>{
+        //     dispatch(setIndex({index:null}))
+        //     dispatch(setInIndex({InIndex:null}))
+        //     console.log('dsds')
 
-        }
+        // }
     },[id.id])
 
     return(
