@@ -24,6 +24,7 @@ if(isLoading){
         }} ></Storycircle>
         )
     }
+ 
         </div>
     <hr></hr>
     </>

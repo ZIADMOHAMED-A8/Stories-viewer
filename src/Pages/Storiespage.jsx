@@ -17,20 +17,13 @@ export default function Storiespage(){
     let parentRef=useRef(null)
     let nav=useNavigate()
     let id=useParams('id')
+
     useLayoutEffect(()=>{
         dispatch(setIndex({index:+id.id}))
 
     },[id.id])
-    useEffect(()=>{
-        
-        // return ()=>{
-        //     dispatch(setIndex({index:null}))
-        //     dispatch(setInIndex({InIndex:null}))
-        //     console.log('dsds')
 
-        // }
-    },[id.id])
-
+    const width=window.innerWidth
     return(
         <div className={styles.overlay}>
             {isLoading ? <p style={{color:'white'}}>loading</p> : 
@@ -43,13 +36,15 @@ export default function Storiespage(){
                     nav('/')
                 }}>X</div>
             </div>
-            <div ref={parentRef} className={styles.container}>
+            <div ref={parentRef} style={(+id.id===1 || +id.id===2  || +id.id===0) && (width>1300)  ? {marginLeft:'20%'} : (+id.id===data.length-2 || +id.id===data.length-1  || +id.id===data.length) && (width>1300)  ? {marginRight:'20%'} :{}} className={styles.container}>
              
             {
             
             data?.map((item,index)=>
                 <StorySlide index={index} parentRef={parentRef}  item={item}></StorySlide>
-               )}
+               )
+               }
+               
             </div></>
             
             }

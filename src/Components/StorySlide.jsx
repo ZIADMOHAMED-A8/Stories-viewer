@@ -62,6 +62,10 @@ export default function StorySlide({item, index, parentRef}){
     }
         
     function handleclick(clickedIndex) {
+      if(clickedIndex===currentActive){
+        togglePause()
+        return;
+      }
         dispatch(setIndex({ index: clickedIndex }));
         dispatch(setInIndex({ InIndex: 0 }));
         nav(`/stories/${index}`)
