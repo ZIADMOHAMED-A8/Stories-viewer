@@ -143,7 +143,7 @@
   .text_content{ font-size: 18px; }
   .container{ gap:12px; padding: 0 10px; }
   .container >div:not(.active){
-    display: none;
+    width:0px;
   }
   .container div.active{
     width: 100%;
