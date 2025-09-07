@@ -21,7 +21,8 @@ if(isLoading){
        { data.map((item,index)=>
         <Storycircle back={item.avatar} onClick={()=>{
             handleclick(index)
-        }} ></Storycircle>
+        }}
+        name={item.username} ></Storycircle>
         )
     }
  

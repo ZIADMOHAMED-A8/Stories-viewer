@@ -37,6 +37,8 @@ const StoryProgress = forwardRef(
             });
           }
         } else {
+          console.log(InIndex)
+
           dispatch(setInIndex({ InIndex: InIndex + 1 }));
         }
       }
