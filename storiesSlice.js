@@ -3,7 +3,7 @@ import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 const apiSlice=createApi({
     reducerPath:'api',
     baseQuery:fetchBaseQuery({
-        baseUrl:'https://stories-dummybackend-production.up.railway.app'
+        baseUrl:'https://stories-dummy-backend.vercel.app/'
     }),
     endpoints:builder=>({
         getStories:builder.query({
